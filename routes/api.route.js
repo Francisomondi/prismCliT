@@ -36,6 +36,9 @@ try {
   const singleProduct = await product.findUnique({
     where:{
       id : Number(id),
+    },
+    include:{
+      category:true
     }
   })
 
