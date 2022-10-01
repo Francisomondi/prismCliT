@@ -74,17 +74,45 @@ router.post('/products', async (req, res, next) => {
 
 });
 
-//delete a new product
+//delete a product
 router.delete('/products/:id', async (req, res, next) => {
-  res.send({
-    message: 'Ok api is working 🚀'
+ try {
+  const {id}= req.params
+  const deleteProduct = await product.delete({
+    where:{
+      id : Number(id),
+    },
+   
+  })
+  res.json(deleteProduct)
+
+} catch (error) {
+  next(error)
+}
   });
-});
-//delete a new product
+
+
+  
+
+//update a product
 router.patch('/products/:id', async (req, res, next) => {
-  res.send({
-    message: 'Ok api is working 🚀'
-  });
+  try {
+  const {id}= req.params
+  const updatedProduct = await product.update({
+    where:{
+      id : Number(id),
+    },
+    data: req.body,
+    include:{
+      category:true
+    }
+  })
+
+  res.json(updatedProduct)
+
+} catch (error) {
+  next(error)
+}
 });
 
 module.exports = router;
