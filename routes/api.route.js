@@ -29,11 +29,22 @@ router.get('/products', async (req, res, next) => {
   }
 });
 
-//getting individual products
+//getting individual product by id
 router.get('/products/:id', async (req, res, next) => {
-  res.send({
-    message: 'Ok api is working 🚀'
-  });
+try {
+  const {id}= req.params
+  const singleProduct = await product.findUnique({
+    where:{
+      id : Number(id),
+    }
+  })
+
+  res.json(singleProduct)
+
+  
+} catch (error) {
+  next(error)
+}
 });
 
 //creating a new product
@@ -52,7 +63,7 @@ router.post('/products', async (req, res, next) => {
             categoryId
         }
   })
-  res.json(newProduct)
+  res.json(newProduct) 
 
  } catch (error) {
   next(error)
