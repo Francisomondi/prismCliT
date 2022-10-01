@@ -64,7 +64,10 @@ router.post('/products', async (req, res, next) => {
             name,
             price,
             categoryId
-        }
+        },
+    include:{
+      category:true
+    }
   })
   res.json(newProduct) 
 
@@ -91,9 +94,6 @@ router.delete('/products/:id', async (req, res, next) => {
 }
   });
 
-
-  
-
 //update a product
 router.patch('/products/:id', async (req, res, next) => {
   try {
@@ -108,7 +108,7 @@ router.patch('/products/:id', async (req, res, next) => {
     }
   })
 
-  res.json(updatedProduct)
+  res.json(Product)
 
 } catch (error) {
   next(error)
