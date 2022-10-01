@@ -4,7 +4,7 @@ const {
 } = require("@prisma/client")
 
 const {
-  product
+  product,category
 } = new PrismaClient()
 
 
@@ -16,7 +16,13 @@ router.get('/products', async (req, res, next) => {
         category: true
       }
     })
-    res.json(products)
+
+    const categories = await category.findMany({
+      include: {
+        product:true
+      }
+    })
+    res.json({products,categories})
 
   } catch (error) {
     next(error)
@@ -32,9 +38,26 @@ router.get('/products/:id', async (req, res, next) => {
 
 //creating a new product
 router.post('/products', async (req, res, next) => {
-  res.send({
-    message: 'Ok api is working 🚀'
-  });
+  const {
+        name,
+        price,
+        categoryId
+    } = req.body
+
+ try {
+  const newProduct= await product.create({
+     data: {
+            name,
+            price,
+            categoryId
+        }
+  })
+  res.json(newProduct)
+
+ } catch (error) {
+  next(error)
+ }
+
 });
 
 //delete a new product
